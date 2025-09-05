@@ -1,9 +1,18 @@
-FROM python:3.10-slim-buster
+#Base Image
+FROM python:3.11.8
 
+#workdir
 WORKDIR /app
 
+#copy
 COPY . /app
 
+#run
 RUN pip install -r requirements.txt
 
-CMD [ "streamlit", "run" , "app.py" ]
+#port
+EXPOSE 8501
+
+#command
+
+CMD [ "streamlit" , "run" , "./report_or_summery.py" ]
