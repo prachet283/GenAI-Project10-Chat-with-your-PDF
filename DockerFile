@@ -1,20 +1,17 @@
+# Base Image
 FROM python:3.11.8
 
+# Set working directory
 WORKDIR /app
 
-# Install system dependencies for faiss
-RUN apt-get update && apt-get install -y build-essential cmake && rm -rf /var/lib/apt/lists/*
+# Copy all files
+COPY . /app
 
-# Copy requirements first for caching
-COPY requirements.txt .
+# Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the code
-COPY . .
+# Expose port (optional for documentation)
+EXPOSE 8501
 
-# Render uses dynamic port
-ENV PORT 8501
-EXPOSE $PORT
-
-# Run Streamlit on Render's port
-CMD ["streamlit", "run", "app.py", "--server.port=$PORT", "--server.address=0.0.0.0"]
+# Run the app
+CMD ["sh", "-c", "streamlit run app.py --server.port $PORT --server.address 0.0.0.0"]
